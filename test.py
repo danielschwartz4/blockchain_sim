@@ -1,6 +1,19 @@
-from urllib.parse import urlparse
+import hashlib
 
 
+def proof_of_work(last_proof):
 
-parsed_url = urlparse('http://192.168.0.5:5000')
-print(parsed_url)
+		proof = 0
+		while valid_proof(last_proof, proof) is False:
+			proof += 1
+
+		return proof
+
+def valid_proof(last_proof, proof):
+
+	guess = f'{last_proof}{proof}'.encode()
+	guess_hash = hashlib.sha256(guess).hexdigest()
+	return guess_hash[:5] == "00000"
+
+
+print(proof_of_work(100))
